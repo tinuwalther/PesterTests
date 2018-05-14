@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="14" errors="0" failures="6" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2018-05-06" time="13:47:27">
+  <environment user="Tinu" machine-name="STINU" cwd="D:\DevOps\00_PSScripts\PesterTests\Test-Framework" user-domain="STINU" platform="Microsoft Windows 10 Pro|C:\WINDOWS|\Device\Harddisk0\Partition3" nunit-version="2.5.8.0" os-version="10.0.16299" clr-version="4.0.30319.42000" />
+  <culture-info current-culture="de-CH" current-uiculture="de-DE" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Failure" success="False" time="29.883" asserts="0" description="Pester">
+    <results>
+      <test-suite type="TestFixture" name="D:\DevOps\00_PSScripts\PesterTests\Test-Framework\Tests\Test-WindowsUpdate.Tests.ps1" executed="True" result="Failure" success="False" time="29.883" asserts="0" description="D:\DevOps\00_PSScripts\PesterTests\Test-Framework\Tests\Test-WindowsUpdate.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Describe Test Services " executed="True" result="Failure" success="False" time="0.8427" asserts="0" description="Describe Test Services ">
+            <results>
+              <test-suite type="TestFixture" name="Context Test service wuauserv" executed="True" result="Failure" success="False" time="0.4731" asserts="0" description="Context Test service wuauserv">
+                <results>
+                  <test-case description="Should get Servicestate Auto and Running True" name="Describe Test Services .Context Test service wuauserv.Should get Servicestate Auto and Running True" time="0.4731" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected 'True', but got $false.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DevOps\00_PSScripts\PesterTests\Test-Framework\Tests\Test-WindowsUpdate.Tests.ps1: line 56
+56:                     $ServiceStauts | Should Be $item.Expect</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Context Test service Netlogon" executed="True" result="Success" success="True" time="0.3696" asserts="0" description="Context Test service Netlogon">
+                <results>
+                  <test-case description="Should get Servicestate Manual and Stopped True" name="Describe Test Services .Context Test service Netlogon.Should get Servicestate Manual and Stopped True" time="0.3696" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Describe Test Connectivity " executed="True" result="Failure" success="False" time="26.526" asserts="0" description="Describe Test Connectivity ">
+            <results>
+              <test-suite type="TestFixture" name="Context Test connectivity to wsus.company.com" executed="True" result="Failure" success="False" time="26.103" asserts="0" description="Context Test connectivity to wsus.company.com">
+                <results>
+                  <test-case description="Should get TcpTest succeeded" name="Describe Test Connectivity .Context Test connectivity to wsus.company.com.Should get TcpTest succeeded" time="26.103" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected 'True', but got $false.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DevOps\00_PSScripts\PesterTests\Test-Framework\Tests\Test-WindowsUpdate.Tests.ps1: line 79
+79:                     $Actual.TcpTestSucceeded | Should Be $item.Expect</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Context Test connectivity to windowsupdate.microsoft.com" executed="True" result="Success" success="True" time="0.423" asserts="0" description="Context Test connectivity to windowsupdate.microsoft.com">
+                <results>
+                  <test-case description="Should get TcpTest succeeded" name="Describe Test Connectivity .Context Test connectivity to windowsupdate.microsoft.com.Should get TcpTest succeeded" time="0.423" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Describe Test Scheduled Tasks  " executed="True" result="Failure" success="False" time="1.9859" asserts="0" description="Describe Test Scheduled Tasks  ">
+            <results>
+              <test-suite type="TestFixture" name="Context Test Scheduled Task PolicyConverter" executed="True" result="Failure" success="False" time="0.6788" asserts="0" description="Context Test Scheduled Task PolicyConverter">
+                <results>
+                  <test-case description="Should get TaskName PolicyConverter" name="Describe Test Scheduled Tasks  .Context Test Scheduled Task PolicyConverter.Should get TaskName PolicyConverter" time="0.6627" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Should get TaskState Ready or Running" name="Describe Test Scheduled Tasks  .Context Test Scheduled Task PolicyConverter.Should get TaskState Ready or Running" time="0.0161" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected 'True', but got $false.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DevOps\00_PSScripts\PesterTests\Test-Framework\Tests\Test-WindowsUpdate.Tests.ps1: line 111
+111:                     $Status | Should Be $item.Expect</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Context Test Scheduled Task SynchronizeTime" executed="True" result="Success" success="True" time="0.6889" asserts="0" description="Context Test Scheduled Task SynchronizeTime">
+                <results>
+                  <test-case description="Should get TaskName SynchronizeTime" name="Describe Test Scheduled Tasks  .Context Test Scheduled Task SynchronizeTime.Should get TaskName SynchronizeTime" time="0.6766" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Should get TaskState Ready or Running" name="Describe Test Scheduled Tasks  .Context Test Scheduled Task SynchronizeTime.Should get TaskState Ready or Running" time="0.0123" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Context Test Scheduled Task SystemSoundsService" executed="True" result="Success" success="True" time="0.6182" asserts="0" description="Context Test Scheduled Task SystemSoundsService">
+                <results>
+                  <test-case description="Should get TaskName SystemSoundsService" name="Describe Test Scheduled Tasks  .Context Test Scheduled Task SystemSoundsService.Should get TaskName SystemSoundsService" time="0.6046" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Should get TaskState Ready or Running" name="Describe Test Scheduled Tasks  .Context Test Scheduled Task SystemSoundsService.Should get TaskState Ready or Running" time="0.0136" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Describe Test Files " executed="True" result="Failure" success="False" time="0.1526" asserts="0" description="Describe Test Files ">
+            <results>
+              <test-suite type="TestFixture" name="Context Test File C:\Windows\System32\drivers\etc\hosts" executed="True" result="Success" success="True" time="0.0889" asserts="0" description="Context Test File C:\Windows\System32\drivers\etc\hosts">
+                <results>
+                  <test-case description="Should be Exists" name="Describe Test Files .Context Test File C:\Windows\System32\drivers\etc\hosts.Should be Exists" time="0.0889" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Context Test File C:\Temp\Test.log" executed="True" result="Failure" success="False" time="0.0637" asserts="0" description="Context Test File C:\Temp\Test.log">
+                <results>
+                  <test-case description="Should be Exists" name="Describe Test Files .Context Test File C:\Temp\Test.log.Should be Exists" time="0.0637" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected 'True', but got $false.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DevOps\00_PSScripts\PesterTests\Test-Framework\Tests\Test-WindowsUpdate.Tests.ps1: line 134
+134:                     $Actual | Should Be $item.Expect</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Describe Test Registry settings " executed="True" result="Failure" success="False" time="0.3758" asserts="0" description="Describe Test Registry settings ">
+            <results>
+              <test-suite type="TestFixture" name="Context Test Registry path for WUServer" executed="True" result="Failure" success="False" time="0.2194" asserts="0" description="Context Test Registry path for WUServer">
+                <results>
+                  <test-case description="Should be http://wsus.company.com:8530" name="Describe Test Registry settings .Context Test Registry path for WUServer.Should be http://wsus.company.com:8530" time="0.2194" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected 'http://wsus.company.com:8530', but got $null.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DevOps\00_PSScripts\PesterTests\Test-Framework\Tests\Test-WindowsUpdate.Tests.ps1: line 179
+179:                     $Actual | Should Be $item.Expect</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Context Test Registry path for WUStatusServer" executed="True" result="Failure" success="False" time="0.1564" asserts="0" description="Context Test Registry path for WUStatusServer">
+                <results>
+                  <test-case description="Should be http://wsus.company.com:8530" name="Describe Test Registry settings .Context Test Registry path for WUStatusServer.Should be http://wsus.company.com:8530" time="0.1564" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected 'http://wsus.company.com:8530', but got $null.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DevOps\00_PSScripts\PesterTests\Test-Framework\Tests\Test-WindowsUpdate.Tests.ps1: line 179
+179:                     $Actual | Should Be $item.Expect</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>
