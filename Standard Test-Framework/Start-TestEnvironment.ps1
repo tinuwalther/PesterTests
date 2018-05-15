@@ -32,6 +32,27 @@ function Start-PesterTests{
     }
     return $PesterReturn
 }
+
+function New-FolderStructure {
+    [cmdletbinding()]
+    param(
+        [Parameter(Mandatory=$true)]
+        [Array]$pathArray
+    )
+    $function = $($MyInvocation.MyCommand.Name)
+    Write-Verbose $function
+    try{
+        foreach ($newPath in $pathArray){
+            if (!(Test-Path -Path $newPath)){
+                $null = New-Item -ItemType Directory -Force $newPath -ErrorAction Stop
+            }
+        }
+    }
+    catch [Exception]{
+        "$(Get-Date -DisplayHint DateTime) [   ERROR   ] $($function), Reason: $($_.CategoryInfo.Reason), Message: $($_.Exception.Message)"
+        $error.Clear()
+    }
+}
 #endregion
 
 #region scriptglobals
@@ -52,6 +73,8 @@ $script:Logfile          = "$($Logfolder)\$($script:config.startscript.Logfile)"
 $script:Jsonfile         = "$($ConfigFolder)\$($script:config.startscript.JsonFile)"
 $script:Xmlfile          = "$($ConfigFolder)\$($script:config.startscript.Xmlfile)"
 $script:Htmlfile         = "$($Reportfolder)\$($script:config.startscript.Htmlfile)"
+
+New-FolderStructure -pathArray @($Logfolder,$Reportfolder,$Scriptfolder,$ConfigFolder,$Internalfolder)
 #endregion
 
 "$(Get-Date -DisplayHint DateTime) [INFORMATION] Run $($script:Scriptname), Version $($script:Version)" | Out-File -FilePath $($script:Logfile) -Encoding default
@@ -65,13 +88,16 @@ $PesterReturn.TestResult | Select-Object * | ConvertTo-Json | Out-File -FilePath
 $InstallArgs = @{}
 $InstallArgs.FilePath     = "$($Internalfolder)\ReportUnit.exe"
 $InstallArgs.ArgumentList = @()
-$InstallArgs.ArgumentList += "$($ConfigFolder)"
-$InstallArgs.ArgumentList += "$($Reportfolder)"
+$InstallArgs.ArgumentList += """$($ConfigFolder)"""
+$InstallArgs.ArgumentList += """$($Reportfolder)"""
 $InstallArgs.Wait         = $true
 $InstallArgs.NoNewWindow  = $true
-(Start-Process @InstallArgs -PassThru).ExitCode
 
-Start-Process "$($Reportfolder)\Index.html"
+Start-Process @InstallArgs -RedirectStandardError "$($Logfolder)\StandardError.log" -RedirectStandardOutput "$($Logfolder)\StandardOutput.log"
+
+if(Test-Path "$($Reportfolder)\Index.html"){
+    Start-Process "$($Reportfolder)\Index.html"
+}
 
 "$(Get-Date -DisplayHint DateTime) [INFORMATION] Tests completed in: $($PesterReturn.Time)" | Out-File -FilePath $($script:Logfile) -Append -Encoding default
 "$(Get-Date -DisplayHint DateTime) [INFORMATION] Total: $($PesterReturn.TotalCount), Passed: $($PesterReturn.PassedCount), Failed: $($PesterReturn.FailedCount), Skipped: $($PesterReturn.SkippedCount), Pending: $($PesterReturn.PendingCount)"   | Out-File -FilePath $($script:Logfile) -Append -Encoding default
