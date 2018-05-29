@@ -53,6 +53,74 @@
 param()
 
 #region PSCode
+function ConvertFrom-ErrorRecord{
+    <#
+        Helper function to convert an error
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory=$true)]
+        [Management.Automation.ErrorRecord] $Record,
+
+        [Parameter(Mandatory=$true)]
+        [String] $FunctionName
+    )
+  
+    begin{
+        $ret = $null
+    }
+    process{
+        $ret = [PSCustomObject]@{
+            Function  = $FunctionName
+            Exception = $Record.Exception.Message
+            Reason    = $Record.CategoryInfo.Reason
+            Target    = $Record.CategoryInfo.TargetName
+            MyCommand = $Record.InvocationInfo.MyCommand.Name
+            Script    = $Record.InvocationInfo.ScriptName
+            Line      = $Record.InvocationInfo.ScriptLineNumber
+            Column    = $Record.InvocationInfo.OffsetInLine
+        }
+    }
+    end{
+        return $ret
+    }
+} 
+
+function Get-LastEventCodes{
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory=$true)][String]$Logname,
+        [Parameter(Mandatory=$true)][Int]   $day
+    )
+    $function = $($MyInvocation.MyCommand.Name)
+    Write-verbose $function
+    $ret = @()
+    [DateTime]$now    = Get-Date
+    [DateTime]$after  = $now.AddDays(-$day)
+    [DateTime]$before = $now
+    try{
+        $wmiobj = Get-EventLog $Logname -EntryType Error, Warning -After $after -Before $before -ErrorAction Stop
+        if(-not([String]::IsNullOrEmpty($wmiobj))){
+            $wmiobj | ForEach-Object{
+                if($ret.EventID -notcontains $_.EventID){
+                    $obj = [PSCustomObject]@{
+                        Logname       = $Logname
+                        TimeGenerated = $_.TimeGenerated
+                        EventID       = $_.EventID
+                        EntryType     = $_.EntryType
+                        Message       = $_.Message
+                    }
+                    $ret += $obj
+                }
+            }
+        }
+    }
+    catch{
+        $ret = ConvertFrom-ErrorRecord -Record $_ -FunctionName $function
+        $error.Clear() 
+    }
+    return $ret
+}
 
 function Get-HostUptime {
     [CmdletBinding()]
@@ -132,36 +200,6 @@ function Get-Diskinfo{
             $ret += $obj
         }
     }
-    return $ret
-}
-
-function Get-LastEventCodes{
-    [CmdletBinding()]
-    param(
-        [Parameter(Mandatory=$true)][String]$Logname,
-        [Parameter(Mandatory=$true)][Int]   $day
-    )
-    $function = $($MyInvocation.MyCommand.Name)
-    Write-verbose $function
-    $ret = @()
-    [DateTime]$now    = Get-Date
-    [DateTime]$after  = $now.AddDays(-$day)
-    [DateTime]$before = $now
-    $wmiobj = Get-EventLog $Logname -EntryType Error, Warning -After $after -Before $before -ErrorAction Stop
-    if(-not([String]::IsNullOrEmpty($wmiobj))){
-            $wmiobj | ForEach-Object{
-                if($ret.EventID -notcontains $_.EventID){
-                    $obj = [PSCustomObject]@{
-                        Logname       = $Logname
-                        TimeGenerated = $_.TimeGenerated
-                        EventID       = $_.EventID
-                        EntryType     = $_.EntryType
-                        Message       = $_.Message
-                    }
-                    $ret += $obj
-                }
-            }
-        }
     return $ret
 }
 
